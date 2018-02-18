@@ -15,7 +15,7 @@
 
 			defaults: {
 				duration: "normal",
-				easing: "ease-in-out" // Deprecated value, will be replaced by "ease-in-out-cubic"
+				easing: "ease-in-out-cubic" // Deprecated value, will be replaced by "ease-in-out-cubic"
 			},
 
 			animate: function (obj, args) {
@@ -117,7 +117,7 @@
 				animation.diffValues = props.diffValues;
 
 				// Set initial time
-				animation.startTime = new Date().getTime();
+				// animation.startTime = new Date().getTime();
 			},
 
 			parseProperties: function (props, obj) {
@@ -143,11 +143,15 @@
 				};
 			},
 
-			tick: function (animation) {
+			tick: function (animation,timePassed) {
 				var timeDiff, position, propertyPosition, startValues, diffValues, prop;
 
 				// Calculate position in time for the animation
-				timeDiff = new Date().getTime() - animation.startTime;
+				// timeDiff = new Date().getTime() - animation.startTime;
+				if (!animation.tickStartTime) {
+					animation.tickStartTime = timePassed;
+				}
+				timeDiff = Math.floor(timePassed - animation.tickStartTime);
 				position = timeDiff / animation.options.duration;
 
 				// Stop the animation if the duration has passed
@@ -329,22 +333,23 @@
 					}
 				},
 				start: function () {
-					this.tick();
+					var self = this;
+					self.timer = requestAnimationFrame(function (timePassed) { self.tick(timePassed); });
 				},
 				stop: function () {
 					cancelAnimationFrame(this.timer);
 				},
-				tick: function () {
+				tick: function (timePassed) {
 					var self = this;
 					// setTimeout(function () {
-						self.timer = requestAnimationFrame(function () { self.tick(); });
+						self.timer = requestAnimationFrame(function (timePassed) { self.tick(timePassed); });
 
 						var animations = self.animations;
 						var animation;
 						for (var i = 0, l = animations.length; i < l; i++) {
 							animation = animations[i];
 							if (!animation.cancelled) {
-								if (!module.tick(animation)) {
+								if (!module.tick(animation,timePassed)) {
 									module.mainTimer.remove(animation);
 									i--; l--;
 									animation.advanceCallback();
