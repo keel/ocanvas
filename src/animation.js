@@ -336,7 +336,7 @@
 				},
 				tick: function () {
 					var self = this;
-					setTimeout(function () {
+					// setTimeout(function () {
 						self.timer = requestAnimationFrame(function () { self.tick(); });
 
 						var animations = self.animations;
@@ -356,7 +356,7 @@
 						if (!module.core.timeline.running) {
 							module.core.draw.redraw(true);
 						}
-					}, 1000 / module.core.settings.fps);
+					// }, 1000 / module.core.settings.fps);
 				}
 			},
 

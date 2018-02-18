@@ -2,14 +2,14 @@
 
 	// Define the class
 	var keyboard = function () {
-		
+
 		// Return an object when instantiated
 		return {
-			
+
 			keysDown: {},
 			keyPressTimers: {},
 			modifiedKeys: [],
-			
+
 			// Method for initializing the keyboard object
 			init: function () {
 				var self = this;
@@ -39,7 +39,7 @@
 
 				// Prevent default for keys that have been added to the prevent list
 				this.preventDefault(e);
-			
+
 				// Cancel event if the key is already pressed down
 				// (some browsers repeat even keydown when held down)
 				if (e.type === "keydown" && this.keysDown[keyCode] === true) {
@@ -64,7 +64,8 @@
 				if (e.type === "keydown") {
 					this.keyPressTimers[keyCode] = setInterval(function () {
 						events.triggerHandlers(canvasElement, ["keypress"], eventObject);
-					}, 1000 / this.core.settings.fps);
+					// }, 1000 / this.core.settings.fps);
+					}, 10);
 				}
 
 				// If there are no more keys pressed down, cancel the keypress timers
@@ -78,7 +79,7 @@
 					}
 				}
 			},
-			
+
 			// Method for preventing the default behavior of the assigned keys
 			preventDefault: function (e) {
 				if ((this.core.mouse && this.core.mouse.canvasFocused === true) || !this.core.mouse) {
@@ -89,25 +90,25 @@
 					}
 				}
 			},
-			
+
 			// Method for adding keys that will have the default actions prevented
 			addPreventDefaultFor: function (keys) {
-				
+
 				// Fix the keys array
 				keys = (typeof keys === "number") ? [keys] : ((keys instanceof Array) ? keys : []);
-				
+
 				// Add the keys
 				for (var i = 0; i < keys.length; i++) {
 					this.modifiedKeys.push(keys[i]);
 				}
 			},
-			
+
 			// Method for removing keys that will no longer have the default actions prevented
 			removePreventDefaultFor: function (keys) {
-				
+
 				// Fix the keys array
 				keys = (typeof keys === "number") ? [keys] : ((keys instanceof Array) ? keys : []);
-				
+
 				// Remove the keys
 				var i, index;
 				for (i = 0; i < keys.length; i++) {
@@ -117,7 +118,7 @@
 					}
 				}
 			},
-			
+
 			// Method for getting the key code from current event
 			getKeyCode: function (e) {
 				return e.keyCode === 0 ? e.which : e.keyCode;
@@ -159,11 +160,11 @@
 
 				return currentlyDown;
 			},
-			
+
 			ARROW_UP:38, ARROW_DOWN:40, ARROW_LEFT:37, ARROW_RIGHT:39, SPACE:32, ENTER:13, ESC:27
 		};
 	};
-	
+
 	// Register the module
 	oCanvas.registerModule("keyboard", keyboard, "init");
 
