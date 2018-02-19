@@ -37,6 +37,7 @@
             duration: options.duration,
             easing: options.easing,
             loop: options.loop,
+            update: options.update,
             callback: options.callback
           }
         };
@@ -156,12 +157,12 @@
         // Stop the animation if the duration has passed
         if (position > 1) {
           if (!animation.options.loop) {
-						this.setEndValues(animation);
-						return false;
-					}
-					position = 0;
-					animation.tickStartTime = timePassed;
-					timeDiff = 0;
+            this.setEndValues(animation);
+            return false;
+          }
+          position = 0;
+          animation.tickStartTime = timePassed;
+          timeDiff = 0;
         }
 
         // Calculate the property position based on the easing function
@@ -179,7 +180,9 @@
         for (prop in diffValues) {
           this.setObjectProperty(animation.obj, prop, startValues[prop], diffValues[prop], propertyPosition);
         }
-
+        if (animation.options.update) {
+          animation.options.update();
+        }
         return true;
       },
 
