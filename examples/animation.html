@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Pixi star cluster</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="js/ocanvas-2.9.k.js"></script>
+  <script type="text/javascript" src="js/stats.min.js"></script>
+  <style>
+  * {
+    padding: 0;
+    margin: 0
+  }
+
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" height="800" width="500"></canvas>
+  <script type="text/javascript">
+  var stats = new Stats();
+  stats.showPanel(0);
+  document.body.appendChild(stats.dom);
+
+
+  var c = document.querySelector("#canvas"),
+  ctx = c.getContext("2d");
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+  c.addEventListener("touchmove", function(e) { e.preventDefault(); }, false);
+  var cw = Math.floor(c.width / 2);
+  var ch = Math.floor(c.height / 2);
+
+  var canvas = oCanvas.create({
+    'canvas': "#canvas",
+    'background': "#000",
+    'disableScrolling': true,
+    'clearEachFrame':false
+    // 'drawEachFrame':false,
+  });
+
+  function pointAngle(x1, y1, x2, y2) {
+    var diff_x = x2 - x1,diff_y = y2 - y1;
+    var re = 360 * Math.atan(diff_y / diff_x) / (2 * Math.PI);
+    if (diff_x > 0) {
+      re += 180;
+    }
+    return re;
+  }
+  var arcArr = [];
+  var createArc = function(x, y) {
+    var xdiff = x - cw;
+    var ydiff = y - ch;
+    var angle = pointAngle(x, y, cw, ch);
+    var r = Math.abs(Math.pow((xdiff * xdiff + ydiff * ydiff), 0.5));
+    // console.log('r', r, 'angle', angle);
+
+    var arc = canvas.display.arc({
+      x: cw,
+      y: ch,
+      radius: r,
+      start: angle,
+      end: angle + 2,
+      rotation: 0,
+      stroke: '2px #fff'
+    });
+
+    arcArr.push(arc);
+    canvas.addChild(arc);
+    arc.animate({
+      rotation: arc.rotation + 360
+    }, {
+      'duration': "long",
+      'easing': 'linear', //"ease-in-out-cubic",
+      'queue': "rotation",
+      'loop': true,
+      'callback': function() {
+        console.log('animate finished.');
+      },
+      'update':function () {
+        arc.stroke = '2px hsla('+arc.rotation+',100%,50%,1)';
+      }
+    });
+    console.log(arcArr.length);
+    return arc;
+  };
+
+
+  var clearAll = function(ctx) {
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillStyle = 'rgba(0,0,0,.2)';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  };
+
+  canvas.setLoop(function() {
+    stats.begin();
+    // canvas.clear();
+    clearAll(canvas.canvas);
+    stats.end();
+  }).start();
+
+  canvas.bind("mousemove touchstart touchmove", function() {
+    createArc(canvas.mouse.x || canvas.touch.x, canvas.mouse.y || canvas.touch.y);
+  });
+  </script>
+</body>

@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Sprites test</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="js/ocanvas-2.9.k.js"></script>
+  <script type="text/javascript" src="js/stats.min.js"></script>
+  <style>
+  * {
+    padding: 0;
+    margin: 0
+  }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" height="800" width="500"></canvas>
+  <script type="text/javascript">
+  var stats = new Stats();
+  stats.showPanel(0);
+  document.body.appendChild(stats.dom);
+
+  var randomNum = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
+
+  var c = document.querySelector("#canvas"),
+  ctx = c.getContext("2d");
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+  // c.addEventListener("touchmove", function(e) { e.preventDefault(); }, false);
+
+  var canvas = oCanvas.create({
+    canvas: "#canvas",
+    background: "#ccc",
+    // 'clearEachFrame':false,
+    // 'drawEachFrame':false,
+  });
+  var sprite = canvas.display.sprite({
+    x: 177,
+    y: 137,
+    origin: { x: "center", y: "center" },
+    image: "img/sprite.png",
+    generate: true,
+    width: 20,
+    height: 20,
+    direction: "x",
+    duration: 60
+  });
+
+  canvas.setLoop(function() {
+    stats.begin();
+    stats.end();
+  }).start();
+  canvas.addChild(sprite);
+
+  sprite.start();
+
+for (var i = 0; i < 200; i++) {
+  var s2 = sprite.clone({x:randomNum(10,500),y:randomNum(10,900)});
+  canvas.addChild(s2);
+  s2.start();
+}
+
+  var sprite_1 = canvas.display.sprite({
+    x: 144,
+    y: 237,
+    image: "img/sprite.png",
+    frames: [
+      { x: 0, y: 0 },
+      { x: 80, y: 0 },
+      { x: 140, y: 0 }
+    ],
+    width: 20,
+    height: 20,
+    frame: 1
+  });
+
+  var sprite_2 = sprite_1.clone({
+    x: 167,
+    frame: 2
+  });
+  var sprite_3 = sprite_1.clone({
+    x: 190,
+    frame: 3
+  });
+
+  canvas.addChild(sprite_1);
+  canvas.addChild(sprite_2);
+  canvas.addChild(sprite_3);
+  </script>
+</body>
