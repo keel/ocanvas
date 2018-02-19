@@ -34,6 +34,7 @@
   var canvas = oCanvas.create({
     'canvas': "#canvas",
     'background': "#000",
+    'fps':70,
     'disableScrolling': true,
     'clearEachFrame':false
     // 'drawEachFrame':false,
@@ -75,7 +76,7 @@
       'queue': "rotation",
       'loop': true,
       'callback': function() {
-        console.log('animate finished.');
+        // console.log('animate finished.');
       },
       'update':function () {
         arc.stroke = '2px hsla('+arc.rotation+',100%,50%,1)';

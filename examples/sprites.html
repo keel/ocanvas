@@ -25,6 +25,8 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
+  var spriteNum = 300;
+
   var c = document.querySelector("#canvas"),
   ctx = c.getContext("2d");
   c.width = window.innerWidth;
@@ -34,6 +36,7 @@
   var canvas = oCanvas.create({
     canvas: "#canvas",
     background: "#ccc",
+    'fps':70,
     // 'clearEachFrame':false,
     // 'drawEachFrame':false,
   });
@@ -57,7 +60,7 @@
 
   sprite.start();
 
-for (var i = 0; i < 200; i++) {
+for (var i = 0; i < spriteNum; i++) {
   var s2 = sprite.clone({x:randomNum(10,500),y:randomNum(10,900)});
   canvas.addChild(s2);
   s2.start();
