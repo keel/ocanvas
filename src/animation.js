@@ -160,6 +160,9 @@
             this.setEndValues(animation);
             return false;
           }
+          if (typeof animation.options.loop === 'number') {
+            animation.options.loop--;
+          }
           position = 0;
           animation.tickStartTime = timePassed;
           timeDiff = 0;

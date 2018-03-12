@@ -85,7 +85,7 @@
 					width = !isNaN(parseFloat(value)) ? parseFloat(value) : width;
 					this.canvasElement.width = width;
 					this.background.set(this.settings.background);
-					this.redraw();
+					// this.redraw();
 				},
 				get: function () {
 					return width;
@@ -98,7 +98,7 @@
 					height = !isNaN(parseFloat(value)) ? parseFloat(value) : height;
 					this.canvasElement.height = height;
 					this.background.set(this.settings.background);
-					this.redraw();
+					// this.redraw();
 				},
 				get: function () {
 					return height;

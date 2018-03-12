@@ -2,7 +2,7 @@
 
 	// Define the class
 	var events = function () {
-		
+
 		// Return an object when instantiated
 		return {
 
@@ -90,7 +90,7 @@
 				// This function will return an object if the pointer is inside it, or false otherwise
 				return result;
 			},
-
+			//TODO  这里遍历所有对象太消耗资源，需要找到为什么要调用这个方法
 			getFrontObject: function (pointerName) {
 				return this.findFrontObject(this.core.children, this.core[pointerName]) || undefined;
 			},
@@ -337,19 +337,19 @@
 				var properties = "altKey ctrlKey metaKey shiftKey button charCode keyCode clientX clientY pageX pageY screenX screenY detail eventPhase isChar touches targetTouches changedTouches scale rotation".split(" "),
 					numProps = properties.length,
 					eventObject, i, property, buttonConversion;
-				
+
 				// Fix specific properties and methods
 				eventObject = {
 					originalEvent: e,
 					timeStamp: (new Date()).getTime(),
 					which: e === undefined ? 0 : (e.which === 0 ? e.keyCode : e.which),
-					
+
 					preventDefault: function () {
 						if (e !== undefined) {
 							e.preventDefault();
 						}
 					},
-					
+
 					stopPropagation: function () {
 						if (this.bubbles) {
 							this.stoppingPropagation = true;

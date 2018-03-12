@@ -2,7 +2,7 @@
 
 	// Define the class
 	var mouse = function () {
-		
+
 		// Return an object when instantiated
 		return {
 
@@ -44,7 +44,7 @@
 
 			bindHandlers: function () {
 				var self, core, canvasElement, type;
-				
+
 				self = this;
 				core = this.core;
 				canvasElement = core.canvasElement;
@@ -154,20 +154,24 @@
 
 				}
 			},
-			
+
 			getPos: function (e) {
 				var canvas = this.core.canvasElement;
 				var boundingRect = canvas.getBoundingClientRect();
-				var scaleX = canvas.width / canvas.clientWidth;
-				var scaleY = canvas.height / canvas.clientHeight;
+				// var scaleX = canvas.width / canvas.clientWidth;
+				// var scaleY = canvas.height / canvas.clientHeight;
 
-				// Calculate the mouse position relative to the viewport.
-				// e.clientX exists, but has been incorrect in older versions of webkit.
-				var clientX = e.pageX - window.pageXOffset;
-				var clientY = e.pageY - window.pageYOffset;
+				// // Calculate the mouse position relative to the viewport.
+				// // e.clientX exists, but has been incorrect in older versions of webkit.
+				// var clientX = e.pageX - window.pageXOffset;
+				// var clientY = e.pageY - window.pageYOffset;
 
-				var x = scaleX * (clientX - Math.round(boundingRect.left));
-				var y = scaleY * (clientY - Math.round(boundingRect.top));
+				// var x = scaleX * (clientX - Math.round(boundingRect.left));
+				// var y = scaleY * (clientY - Math.round(boundingRect.top));
+
+
+				x = (e.clientX - Math.round(boundingRect.left));
+				y = (e.clientY - Math.round(boundingRect.top));
 
 				return { x: x, y: y };
 			},
@@ -177,13 +181,13 @@
 				this.x = pos.x;
 				this.y = pos.y;
 			},
-			
+
 			onCanvas: function (e) {
 				e = e || (this.core.events.lastPointerEventObject && this.core.events.lastPointerEventObject.originalEvent);
-				
+
 				// Get pointer position
 				var pos = e ? this.getPos(e) : { x: this.x, y: this.y };
-				
+
 				// Check boundaries => (left) && (right) && (top) && (bottom)
 				if ( (pos.x >= 0) && (pos.x <= this.core.width) && (pos.y >= 0) && (pos.y <= this.core.height) ) {
 					this.canvasHovered = true;
